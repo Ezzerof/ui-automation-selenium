@@ -1,6 +1,8 @@
+import logging
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 
+logger = logging.getLogger(__name__)
 
 class LoginPage:
     # Locators
@@ -13,10 +15,12 @@ class LoginPage:
 
     def open(self):
         """Opens the Swag Lab login page."""
+        logger.info("Opening Swag Lab login page...")
         self.driver.get("https://www.saucedemo.com/")
 
     def login(self, username: str, password: str):
         """Fills in the login form and submit it."""
+        logger.info(f"Attempting to log in with username: {username}.")
         self.driver.find_element(*self.USERNAME_INPUT).send_keys(username)
         self.driver.find_element(*self.PASSWORD_INPUT).send_keys(password)
         self.driver.find_element(*self.LOGIN_BUTTON).click()
