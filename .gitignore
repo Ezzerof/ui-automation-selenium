@@ -6,9 +6,10 @@ __pycache__/
 # Ignore virtual environment
 venv/
 
-# Ignore Allure reports
+# Ignore Allure reports and screenshots
 reports/
 allure-results/
+reports/screenshots/
 
 # Ignore PyCharm settings
 .idea/
