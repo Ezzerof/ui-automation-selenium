@@ -2,19 +2,37 @@ import pytest
 import allure
 import logging
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.edge.service import Service as EdgeService
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger()
 
+def pytest_addoption(parser):
+    """Add a command-line option to specify the browser."""
+    parser.addoption("--browser", action="store", default="chrome", help="Choose browser: chrome, firefox, edge.")
+
 @pytest.fixture
-def driver():
-    """Fixture to initialize and quit WebDriver."""
+def driver(request):
+    """Fixture to initialize and return the browser driver based on the user."""
+    browser_name = request.config.getoption("--browser")
+
     logger.info("Starting WebDriver...")
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
+
+    if browser_name == "chrome":
+        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    elif browser_name == "firefox":
+        driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+    elif browser_name == "edge":
+        driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+    else:
+        raise ValueError(f"Unsupported browser: {browser_name}.")
+
     driver.maximize_window()
 
     yield driver
