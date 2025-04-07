@@ -24,3 +24,15 @@ class LoginPage:
         self.driver.find_element(*self.USERNAME_INPUT).send_keys(username)
         self.driver.find_element(*self.PASSWORD_INPUT).send_keys(password)
         self.driver.find_element(*self.LOGIN_BUTTON).click()
+
+    @property
+    def username_input(self):
+        return self.driver.find_element("id", "user-name")
+
+    @property
+    def password_input(self):
+        return self.driver.find_element("id", "password")
+
+    @property
+    def error_message(self):
+        return self.driver.find_element("xpath", "//h3[@data-test='error']").text

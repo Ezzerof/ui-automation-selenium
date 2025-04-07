@@ -1,0 +1,7 @@
+credentials:
+  valid_username: standard_user
+  valid_password: secret_sauce
+  leading_whitespace_username:  standard_user
+  invalid_username: invalid_user
+  invalid_password: invalid_password
+
