@@ -9,6 +9,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
+from pages.login_page import LoginPage
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger()
@@ -56,3 +58,7 @@ def pytest_runtest_makereport(item, call):
             # Attach screenshot to Allure report
             with open(screenshot_path, "rb") as image_file:
                 allure.attach(image_file.read(), name="Failure Screenshot", attachment_type=allure.attachment_type.PNG)
+
+@pytest.fixture
+def login_page(driver):
+    return LoginPage(driver)
