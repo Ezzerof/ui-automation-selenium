@@ -53,8 +53,7 @@ def test_login_with_enter_key(driver, login_page):
         login_page.open()
 
     with allure.step("Enter valid credentials and hit Enter key"):
-        login_page.username_input.send_keys(username)
-        login_page.password_input.send_keys(password + Keys.ENTER)
+        login_page.login(username, password)
 
     with allure.step("Verify that user is redirected to the inventory page"):
         assert "inventory.html" in driver.current_url, "Login failed using Enter key."
@@ -71,8 +70,7 @@ def test_login_with_invalid_username(driver, login_page):
         login_page.open()
 
     with allure.step("Enter invalid username and valid password"):
-        login_page.username_input.send_keys(username)
-        login_page.password_input.send_keys(password + Keys.ENTER)
+        login_page.login(username, password)
 
     with allure.step("Verify that error message appears"):
         assert "Epic sadface: Username and password do not match any user in this service" in login_page.error_message
@@ -89,8 +87,7 @@ def test_login_with_invalid_password(driver, login_page):
         login_page.open()
 
     with allure.step("Enter valid username and invalid password"):
-        login_page.username_input.send_keys(username)
-        login_page.password_input.send_keys(password + Keys.ENTER)
+        login_page.login(username, password)
 
     with allure.step("Verify that error message appears"):
         assert "Epic sadface: Username and password do not match any user in this service" in login_page.error_message
@@ -107,8 +104,7 @@ def test_login_with_invalid_credentials(driver, login_page):
         login_page.open()
 
     with allure.step("Enter invalid username and password"):
-        login_page.username_input.send_keys(username)
-        login_page.password_input.send_keys(password + Keys.ENTER)
+        login_page.login(username, password)
 
     with allure.step("Verify that error message appears"):
         assert "Epic sadface: Username and password do not match any user in this service" in login_page.error_message
@@ -158,3 +154,52 @@ def test_login_with_empty_fields(driver, login_page):
 
     with allure.step("Verify that error message appears"):
         assert "Epic sadface: Username is required" in login_page.error_message
+
+@allure.feature("Login Feature")
+@allure.story("Login using special characters")
+def test_login_using_special_characters(driver, login_page):
+    """Test login using special characters on username"""
+
+    username = get_credentials("special_characters_username")
+
+    with allure.step("Open Swag Labs login page"):
+        login_page.open()
+
+    with allure.step("Enter credentials and submit the login form"):
+        login_page.login(username, get_credentials("valid_password"))
+
+    with allure.step("Verify that error message appears"):
+        assert "Epic sadface: Username and password do not match any user in this service" in login_page.error_message
+
+@allure.feature("Login Feature")
+@allure.story("SQL injection attempt")
+def test_sql_injection_login_form(driver, login_page):
+    """Test SQL injection on the Login form"""
+
+    username = get_credentials("sql_injection")
+
+    with allure.step("Open Swag Labs login page"):
+        login_page.open()
+
+    with allure.step("Enter SQL injection on username and submit the login form"):
+        login_page.login(username, get_credentials("valid_password"))
+
+    with allure.step("Verify that error message appears"):
+        assert "Epic sadface: Username and password do not match any user in this service" in login_page.error_message
+
+@allure.feature("Login Feature")
+@allure.story("Login with long username/password input")
+def test_login_with_long_password_username(driver, login_page):
+    """Test Login functionality using long username and password"""
+
+    username = get_credentials("long_username")
+    password = get_credentials("long_password")
+
+    with allure.step("Open Swag Labs login page"):
+        login_page.open()
+
+    with allure.step("Enter long username/password and submit the login form"):
+        login_page.login(username, password)
+
+    with allure.step("Verify that error message appears"):
+        assert "Epic sadface: Username and password do not match any user in this service" in login_page.error_message

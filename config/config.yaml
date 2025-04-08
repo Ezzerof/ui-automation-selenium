@@ -4,4 +4,7 @@ credentials:
   leading_whitespace_username:  standard_user
   invalid_username: invalid_user
   invalid_password: invalid_password
-
+  special_characters_username: $£"*&(!%)
+  sql_injection: "' OR '1'='1' -- "
+  long_username: verylongusernamefortestingpurposeonlythatshouldfail
+  long_password: verylongpasswordfortestingpurposeonlythatshouldfail
