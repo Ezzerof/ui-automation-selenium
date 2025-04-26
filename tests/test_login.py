@@ -28,8 +28,8 @@ def test_login_with_valid_credential(driver, login_page):
 def test_login_with_whitespace(driver, login_page):
     """Test login with leading/trailing spaces in credentials."""
 
-    username = f"  {get_credentials("valid_username")}  "
-    password = f"  {get_credentials("valid_password")}  "
+    username = f"  {get_credentials('valid_username')}  "
+    password = f"  {get_credentials('valid_password')}  "
 
     with allure.step("Open Swag Labs login page"):
         login_page.open()
